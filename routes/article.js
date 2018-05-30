@@ -68,7 +68,7 @@ router.post('/api/article/create', async (ctx, next)=>{
       }
     }
   } else {
-    // 创建
+    // 创建文章
     var newArticle = new ArticleModel({
       title: requestData.title,
       tags: requestData.tags,
