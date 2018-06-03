@@ -138,8 +138,10 @@ router.get('/api/article/list', async(ctx,next) =>{
       let matches = /\(([http|https].*)\)/.exec(item.content);
       let picture = matches && matches[1] || '';
       let index = item.content.indexOf('<!--more-->');
-      item.isShowContinue = index < item.content.length;
-      item.content = item.content.slice(0,index);
+      if(index !== -1){
+        item.isShowContinue = index < item.content.length;
+        item.content = item.content.slice(0,index);
+      }
       item.picture = picture;
       return item;
     });
