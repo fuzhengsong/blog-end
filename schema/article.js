@@ -31,9 +31,9 @@ ArticleSchema.statics.findAll = function(data){
   let page = data.page;
   let size = data.size;
   if(data.tags){
-    return this.find({"tags": data.tags}).skip((page-1) * size).limit(size).sort({update_time: 'desc'});
+    return this.find({"tags": data.tags}).skip((page-1) * size).limit(size).sort({create_time: 'desc'});
   } else {
-    return this.find().skip((page-1) * size).limit(size).sort({update_time: 'desc'});
+    return this.find().skip((page-1) * size).limit(size).sort({create_time: 'desc'});
   }
 };
 
