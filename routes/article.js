@@ -227,11 +227,29 @@ router.get('/api/article/detail', async(ctx,next)=>{
     let id = query.id;
     var objectId = new mongoose.Types.ObjectId(id);
     let articleDetail = await ArticleModel.findById(objectId);
+    let preArticle = await ArticleModel.find({_id: {$lt: objectId}}).sort({_id: -1 }).limit(1);
+    let nextArticle = await ArticleModel.find({_id: {$gt: objectId}}).limit(1);
+
+    let near = {};
+    if(preArticle[0]){
+      near.pre = {
+        id: preArticle[0]._id,
+        title: preArticle[0].title
+      }
+    }
+    if(nextArticle[0]){
+      near.next = {
+        id: nextArticle[0]._id,
+        title: nextArticle[0].title
+      }
+    }
+
     ctx.body = {
       errno: 0,
       message: '',
       data: {
-        detail: articleDetail
+        detail: articleDetail,
+        near: near
       }
     }
   } catch(err){

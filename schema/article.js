@@ -6,6 +6,7 @@ var ArticleSchema = new mongoose.Schema({
     type: String,
     required: [true, 'title is required']
   },
+  id: Number,
   tags: [String],
   picture: String,
   content: String,
