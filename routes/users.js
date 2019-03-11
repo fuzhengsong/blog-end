@@ -24,10 +24,10 @@ const config = require('../config/config');
  */
 router.post('/api/user/register', async(ctx, next) => {
   let requestData = ctx.request.body;
-  return ctx.body = {
-    errno: 1,
-    message: '无法注册'
-  };
+  // return ctx.body = {
+  //   errno: 1,
+  //   message: '无法注册'
+  // };
   let username = requestData.username;
   let password = requestData.password;
   if (username === '') {

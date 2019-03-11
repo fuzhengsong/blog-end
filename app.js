@@ -1,5 +1,6 @@
 const Koa = require('koa')
 const app = new Koa()
+const path = require('path')
 const views = require('koa-views')
 const readFiles = require('./util/readFile')
 const json = require('koa-json')
@@ -10,6 +11,7 @@ const db = require('./config/dbconfig')
 const routers = require('./routes/index');
 const jwt = require('koa-jwt');
 const config = require('./config/config');
+
 // error handler
 onerror(app)
 
@@ -19,7 +21,7 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(logger())
-app.use(require('koa-static')(__dirname + '/public'))
+app.use(require('koa-static')(path.join(__dirname, './public')))
 
 app.use(views(__dirname + '/views', {
   extension: 'pug'
@@ -31,6 +33,7 @@ app.use(async (ctx, next) => {
     await next()
   } catch(err){
     if(err.status === 401){
+      console.log(err)
       ctx.body = {
         errno: 1,
         message: '请重新登录',
@@ -40,6 +43,8 @@ app.use(async (ctx, next) => {
     }
   }
 });
+
+
 
 //读取文件
 app.use( async (ctx,next) =>{
@@ -70,11 +75,10 @@ app.use(jwt({
   secret
 }).unless({
   path: [/\/register/, /\/login/, /\/uploads/, /\/article\/list/, /\/article\/detail/,
-  /\/tags\/list/
+  /\/tags\/list/, /\/index/, /\/public/
   ]
 
 }));
-
 app.use(routers.routes()).use(routers.allowedMethods());
 
 // error-handling
